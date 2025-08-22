@@ -1,0 +1,388 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Container Spaces Kenya</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+</head>
+<body class="bg-white text-gray-800">
+
+<!-- Header -->
+<header class="fixed top-0 left-0 w-full bg-white shadow-md z-50">
+  <div class="container mx-auto px-5 py-3 flex items-center justify-between">
+    <!-- Logo -->
+    <a href="/" class="flex items-center gap-2">
+      <img src="https://chatgpt.com/s/m_68a6f7f1a6a481919957ba53f15e1d86" alt="Logo" class="h-10 w-auto">
+      <span class="text-2xl font-extrabold font-[Lato] text-[#FF6B00]">Container Spaces Kenya</span>
+    </a>
+    <!-- Desktop Nav -->
+    <nav class="hidden md:flex items-center gap-6">
+      <a href="/" class="text-gray-700 hover:text-[#FF6B00] font-[Lato] font-semibold">Home</a>
+      <a href="/about/" class="text-gray-700 hover:text-[#FF6B00] font-[Lato] font-semibold">About</a>
+      <a href="/services/" class="text-gray-700 hover:text-[#FF6B00] font-[Lato] font-semibold">Services</a>
+      <a href="/products/" class="text-gray-700 hover:text-[#FF6B00] font-[Lato] font-semibold">Products</a>
+      <a href="/contact/" class="text-gray-700 hover:text-[#FF6B00] font-[Lato] font-semibold">Contact</a>
+    </nav>
+    <!-- CTA -->
+    <a href="/get-quote/" class="hidden md:block px-5 py-2 bg-[#FF6B00] hover:bg-[#e55a00] text-white rounded-lg shadow-lg font-semibold font-[Lato]">Get a Quote</a>
+    <!-- Mobile Menu Btn -->
+    <button id="mobileMenuBtn" class="md:hidden focus:outline-none">
+      <svg class="w-7 h-7 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+      </svg>
+    </button>
+  </div>
+  <!-- Mobile Nav -->
+  <div id="mobileMenu" class="hidden bg-white shadow-md border-t border-gray-200 md:hidden">
+    <nav class="flex flex-col items-start gap-3 p-4">
+      <a href="/" class="text-gray-700 hover:text-[#FF6B00] font-[Lato] font-semibold">Home</a>
+      <a href="/about/" class="text-gray-700 hover:text-[#FF6B00] font-[Lato] font-semibold">About</a>
+      <a href="/services/" class="text-gray-700 hover:text-[#FF6B00] font-[Lato] font-semibold">Services</a>
+      <a href="/products/" class="text-gray-700 hover:text-[#FF6B00] font-[Lato] font-semibold">Products</a>
+      <a href="/contact/" class="text-gray-700 hover:text-[#FF6B00] font-[Lato] font-semibold">Contact</a>
+      <a href="/get-quote/" class="px-5 py-2 bg-[#FF6B00] hover:bg-[#e55a00] text-white rounded-lg shadow-lg font-semibold">Get a Quote</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Mobile Script -->
+<script>
+  const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+  const mobileMenu = document.getElementById("mobileMenu");
+  mobileMenuBtn.addEventListener("click", () => mobileMenu.classList.toggle("hidden"));
+</script>
+
+<!-- Carousel -->
+<section class="relative w-full mt-20">
+  <div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+      {% for slide in sliders %}
+      <div class="swiper-slide relative">
+        <img src="{{ slide.image.url }}" alt="{{ slide.title }}" class="w-full h-[600px] object-cover rounded-lg animate-zoom" />
+        <div class="absolute inset-0 bg-black/50 rounded-lg"></div>
+        <div class="absolute top-1/3 left-10 z-10 max-w-xl">
+          <h2 class="slide-item text-5xl font-extrabold font-[Lato] text-[#FFA500] mb-3 opacity-0 translate-x-[-50px]">{{ slide.title }}</h2>
+          {% if slide.sub_description %}
+          <p class="slide-item text-xl font-semibold font-[Lato] text-white mb-2 opacity-0 translate-x-[-50px]">{{ slide.sub_description }}</p>
+          {% endif %}
+          {% if slide.description_left %}
+          <p class="slide-item text-lg text-gray-200 mb-2 opacity-0 translate-x-[-50px]">{{ slide.description_left }}</p>
+          {% endif %}
+          {% if slide.description_right %}
+          <p class="slide-item text-lg font-bold text-white mb-4 opacity-0 translate-x-[50px]">{{ slide.description_right }}</p>
+          {% endif %}
+          <a href="/get-quote/" class="slide-item inline-block px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg shadow-lg font-semibold text-lg opacity-0 translate-y-[20px]">Get a Quote</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="swiper-pagination"></div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+<script>
+const swiper = new Swiper(".mySwiper", {
+  loop: true,
+  autoplay: { delay: 7000, disableOnInteraction: false },
+  pagination: { el: ".swiper-pagination", clickable: true },
+  navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
+  effect: "fade", fadeEffect: { crossFade: true },
+  on: {
+    slideChangeTransitionStart: () => {
+      document.querySelectorAll('.swiper-slide .slide-item').forEach(el => {
+        el.style.opacity = 0;
+        el.style.transform = "translateX(-50px)";
+      });
+    },
+    slideChangeTransitionEnd: () => {
+      const activeSlide = document.querySelector(".swiper-slide-active");
+      if (activeSlide) {
+        activeSlide.querySelectorAll('.slide-item').forEach((el, i) => {
+          setTimeout(() => { el.style.opacity = 1; el.style.transform = "translateX(0)"; }, i * 250);
+        });
+      }
+    }
+  }
+});
+</script>
+<style>
+  .animate-zoom { transition: transform 7s ease-in-out; }
+  .swiper-slide-active img { transform: scale(1.05); }
+  .slide-item { transition: all 0.5s ease-in-out; }
+</style>
+
+<!-- About Section -->
+<section id="about" class="py-12 px-4 max-w-6xl mx-auto text-center">
+  <h3 class="text-3xl font-bold text-blue-800 mb-4">Who We Are</h3>
+  <p class="text-gray-700 leading-relaxed text-lg">
+    Container Spaces Kenya is a leading container logistics and modification company.
+    We provide high-quality container solutions for housing, storage, site offices, and custom fabrication.
+    Trusted by businesses, NGOs, and individuals across East Africa.
+  </p>
+</section>
+
+<!-- Featured Products -->
+<section id="products" class="py-16 bg-gray-100 px-4">
+  <div class="max-w-7xl mx-auto text-center">
+    <h3 class="text-4xl font-[Lato] font-extrabold text-[#FF6B00] mb-8">Featured Products</h3>
+    <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {% for product in products %}
+      <div class="product-card bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-xl transition duration-300 flex flex-col">
+        <img src="{% if product.image %}{{ product.image.url }}{% else %}https://source.unsplash.com/600x400/?container,shipping{% endif %}" alt="{{ product.name }}" class="w-full h-56 object-cover">
+        <div class="p-4 flex-grow flex flex-col">
+          <h4 class="text-lg font-bold font-[Lato] text-gray-900 mb-1">{{ product.name }}</h4>
+          <p class="text-gray-600 text-sm mb-3 line-clamp-3">{{ product.description|truncatewords:20 }}</p>
+          {% if product.productgallery_set.all %}
+          <div class="flex space-x-2 mb-3">
+            {% for thumb in product.productgallery_set.all|slice:":3" %}
+            <img src="{{ thumb.image.url }}" alt="Thumbnail" class="h-12 w-12 rounded-md object-cover border border-gray-300 hover:border-[#FF6B00] cursor-pointer">
+            {% endfor %}
+          </div>
+          {% endif %}
+          <a href="/get-quote/{{ product.id }}/" class="mt-auto inline-block w-full bg-[#FF6B00] hover:bg-[#e55a00] text-white text-center py-2.5 rounded-lg shadow-md font-semibold transition">Get a Quote</a>
+        </div>
+      </div>
+      {% empty %}
+      <p class="col-span-full text-gray-500 text-lg">No products available at the moment.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+<!-- Customer Testimonials Section -->
+<div class="swiper testimonialSwiper max-w-3xl mx-auto">
+    <div class="swiper-wrapper">
+      {% for testimonial in testimonials %}
+      <div class="swiper-slide bg-white rounded-xl shadow-xl p-8">
+        <div class="flex flex-col items-center">
+          <img src="{{ testimonial.image.url }}"
+            alt="{{ testimonial.customer_name }}"
+            class="w-20 h-20 rounded-full shadow-lg mb-4" />
+  
+          <!-- FIXED MESSAGE DISPLAY -->
+          <p class="text-gray-700 text-lg italic mb-4">
+            "{{ testimonial.message }}"
+          </p>
+  
+          <h3 class="text-lg font-bold font-[Lato] text-[#FFA500]">
+            {{ testimonial.customer_name }}
+          </h3>
+  
+          <!-- FIXED STAR RATING INSIDE LOOP -->
+          <div class="mt-2">
+            {% for star in "★★★★★"|slice:":testimonial.rating" %}
+              ⭐
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="swiper-slide bg-white rounded-xl shadow-xl p-8">
+        <div class="flex flex-col items-center">
+          <p class="text-gray-700 text-lg italic">No testimonials available yet.</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  
+    <!-- Pagination -->
+    <div class="swiper-pagination mt-5"></div>
+  </div>
+  
+
+<!-- Styles -->
+<style>
+  .testimonialSwiper .swiper-slide {
+    transition: transform 0.6s ease, opacity 0.6s ease;
+  }
+
+  .testimonialSwiper .swiper-slide-active {
+    transform: scale(1.05);
+  }
+
+  .testimonialSwiper img {
+    border: 4px solid #ffa500;
+  }
+</style>
+
+<!-- Swiper JS -->
+<script>
+  const testimonialSwiper = new Swiper(".testimonialSwiper", {
+    loop: true,
+    autoplay: {
+      delay: 5000,
+      disableOnInteraction: false,
+    },
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+    effect: "fade",
+    fadeEffect: { crossFade: true },
+  });
+</script>
+
+  <!-- Mission, Vision & Core Values Slider -->
+<div class="relative max-w-3xl mx-auto bg-white shadow-md rounded-2xl p-6 my-8 border border-gray-200">
+    <div id="infoSlider" class="overflow-hidden relative">
+        <!-- Slides -->
+        <div class="flex transition-transform duration-700" id="infoSlides">
+            {% for info in company_info %}
+            <div class="flex-shrink-0 w-full px-6 text-center">
+                <h2 class="text-2xl font-bold text-green-700 mb-3">{{ info.title }}</h2>
+                <p class="text-gray-700 text-lg leading-relaxed">{{ info.description }}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Navigation Dots -->
+        <div class="flex justify-center mt-5 space-x-3">
+            {% for info in company_info %}
+            <span class="dot w-3 h-3 rounded-full bg-gray-300 cursor-pointer" onclick="goToSlide({{ forloop.counter0 }})"></span>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for Slider -->
+<script>
+    let currentSlide = 0;
+    const slides = document.getElementById("infoSlides");
+    const totalSlides = {{ company_info|length }};
+    const dots = document.querySelectorAll(".dot");
+
+    function goToSlide(index) {
+        currentSlide = index;
+        updateSlider();
+    }
+
+    function updateSlider() {
+        slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+        dots.forEach((dot, i) => {
+            dot.classList.toggle("bg-green-600", i === currentSlide);
+            dot.classList.toggle("bg-gray-300", i !== currentSlide);
+        });
+    }
+
+    function autoSlide() {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        updateSlider();
+    }
+
+    // Auto change every 4 seconds
+    setInterval(autoSlide, 4000);
+
+    // Initialize
+    updateSlider();
+</script>
+<!-- Customer Interaction Section -->
+<section class="relative mt-12">
+    <!-- Floating WhatsApp Chat Button -->
+    <a href="https://wa.me/254712345678"
+       target="_blank"
+       class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white px-5 py-3 rounded-full shadow-lg flex items-center space-x-2 z-50">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png"
+             alt="WhatsApp" class="w-6 h-6">
+        <span class="hidden md:inline font-semibold">Chat With Us</span>
+    </a>
+<!-- CTA Popup -->
+<div id="ctaPopup" class="fixed bottom-6 right-6 bg-orange-500 text-white p-5 rounded-2xl shadow-lg w-80 animate-bounce">
+    <h2 class="text-xl font-bold mb-2">{{ settings.cta_title }}</h2>
+    <p class="text-sm">{{ settings.cta_subtitle }}</p>
+    <a href="{{ settings.cta_button_link }}"
+       class="bg-white text-orange-600 font-bold px-4 py-2 mt-3 rounded-lg inline-block hover:bg-gray-100">
+        {{ settings.cta_button_text }}
+    </a>
+</div>
+
+<!-- WhatsApp Floating Button -->
+<a href="https://wa.me/{{ settings.whatsapp_number }}" 
+   target="_blank" 
+   class="fixed bottom-6 left-6 bg-green-500 text-white rounded-full shadow-lg px-5 py-3 text-lg font-bold hover:bg-green-600 transition">
+   💬 WhatsApp
+</a>
+
+
+    <!-- Callback Modal -->
+    <form method="POST" class="bg-white p-6 rounded-xl shadow-lg max-w-lg mx-auto mt-10">
+        {% csrf_token %}
+        <h2 class="text-xl font-bold mb-4">Request a Callback</h2>
+    
+        <input type="text" name="name" placeholder="Your Name" class="w-full border p-3 rounded mb-3" required>
+        <input type="text" name="phone" placeholder="Phone Number" class="w-full border p-3 rounded mb-3" required>
+        <input type="email" name="email" placeholder="Email (Optional)" class="w-full border p-3 rounded mb-3">
+        <textarea name="message" placeholder="Your Message" class="w-full border p-3 rounded mb-3"></textarea>
+    
+        <button type="submit" class="w-full bg-orange-500 text-white font-bold py-3 rounded-lg hover:bg-orange-600">
+            Submit Request
+        </button>
+    </form>
+    
+    <!-- Contact Us Section -->
+    <section class="max-w-6xl mx-auto bg-white shadow-md rounded-xl p-8 my-16">
+        <h2 class="text-3xl font-extrabold text-orange-500 mb-8">Get in Touch</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Contact Form -->
+            <form class="space-y-4">
+                <input type="text" placeholder="Full Name" required class="w-full border p-3 rounded-lg">
+                <input type="email" placeholder="Email Address" required class="w-full border p-3 rounded-lg">
+                <textarea placeholder="Your Message" rows="5" class="w-full border p-3 rounded-lg"></textarea>
+                <button class="bg-orange-500 hover:bg-orange-600 text-white px-5 py-3 rounded-lg shadow-lg">
+                    Send Message
+                </button>
+            </form>
+
+            <!-- Google Map -->
+            <section class="w-full my-6">
+              <h2 class="text-2xl font-bold text-gray-800 mb-4">Find Us on Google Maps</h2>
+              <div class="w-full rounded-xl shadow-lg overflow-hidden">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.851900023631!2d36.82194631526157!3d-1.2920650359937536!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f10f850f7f4f7%3A0x6f2b880660d6f8e5!2sNairobi!5e0!3m2!1sen!2ske!4v1690203190665!5m2!1sen!2ske"
+                  width="100%"
+                  height="400"
+                  style="border:0;"
+                  allowfullscreen=""
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+              </div>
+            </section>
+            
+
+<!-- JavaScript -->
+<script>
+    // Show CTA Popup on Scroll
+    document.addEventListener("scroll", () => {
+        const popup = document.getElementById("ctaPopup");
+        const scrolled = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+        if (scrolled > 0.4) {
+            popup.classList.remove("opacity-0", "translate-y-5");
+        }
+    });
+
+    // Callback Modal Open/Close
+    const callbackBtn = document.getElementById("callbackBtn");
+    const callbackModal = document.getElementById("callbackModal");
+    const closeCallback = document.getElementById("closeCallback");
+
+    callbackBtn.addEventListener("click", () => callbackModal.classList.remove("hidden"));
+    closeCallback.addEventListener("click", () => callbackModal.classList.add("hidden"));
+
+    // Callback Form Submit (Later connect to Django backend)
+    document.getElementById("callbackForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        alert("Callback request submitted successfully!");
+        callbackModal.classList.add("hidden");
+    });
+</script>
+</body>
+</html>

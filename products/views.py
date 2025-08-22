@@ -7,6 +7,7 @@ def home(request):
 
     # Fetch products with optimized related image loading
     products = Product.objects.prefetch_related("images").all()
+    testimonials = Testimonial.objects.all()
 
     # Fetch latest 6 testimonials
     testimonials = Testimonial.objects.order_by("-created_at")[:6]
@@ -25,3 +26,4 @@ def home(request):
     }
 
     return render(request, "products/home.html", context)
+    return render(request, 'home.html', {'testimonials': testimonials})

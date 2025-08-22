@@ -8,6 +8,7 @@ class Slider(models.Model):
     subtitle1 = models.CharField(max_length=300, blank=True, null=True)
     subtitle2 = models.CharField(max_length=300, blank=True, null=True)
     image = models.ImageField(upload_to="sliders/")
+    image = models.ImageField(upload_to='slider_images/')
     button_text = models.CharField(max_length=50, blank=True, null=True)
     button_link = models.URLField(blank=True, null=True)
     is_active = models.BooleanField(default=True)

@@ -92,8 +92,8 @@
     </div>
 
     <div class="swiper-pagination"></div>
-    <div class="swiper-button-next"></div>
-    <div class="swiper-button-prev"></div>
+   <!-- <div class="swiper-button-next"></div> -->
+    <!--<div class="swiper-button-prev"></div> -->
   </div>
 </section>
 
@@ -161,23 +161,38 @@
 </section>
 
 <!-- Featured Products -->
+<!-- Featured Products -->
 <section id="products" class="py-16 bg-gray-100 px-4">
   <div class="max-w-7xl mx-auto text-center">
     <h3 class="text-4xl font-[Lato] font-extrabold text-[#FF6B00] mb-8">Featured Products</h3>
     <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {% for product in products %}
       <div class="product-card bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-xl transition duration-300 flex flex-col">
-        <img src="{% if product.image %}{{ product.image.url }}{% else %}https://source.unsplash.com/600x400/?container,shipping{% endif %}" alt="{{ product.name }}" class="w-full h-56 object-cover">
+        
+        {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy" class="w-full h-56 object-cover rounded-t-2xl">
+        {% else %}
+        <img src="https://source.unsplash.com/600x400/?container,shipping" alt="Placeholder" loading="lazy" class="w-full h-56 object-cover rounded-t-2xl">
+        {% endif %}
+
         <div class="p-4 flex-grow flex flex-col">
           <h4 class="text-lg font-bold font-[Lato] text-gray-900 mb-1">{{ product.name }}</h4>
           <p class="text-gray-600 text-sm mb-3 line-clamp-3">{{ product.description|truncatewords:20 }}</p>
-          {% if product.productgallery_set.all %}
+
+          {% with product.productgallery_set.all|slice:":3" as thumbnails %}
+          {% if thumbnails %}
           <div class="flex space-x-2 mb-3">
-            {% for thumb in product.productgallery_set.all|slice:":3" %}
-            <img src="{{ thumb.image.url }}" alt="Thumbnail" class="h-12 w-12 rounded-md object-cover border border-gray-300 hover:border-[#FF6B00] cursor-pointer">
+            {% for thumb in thumbnails %}
+              {% if thumb.image %}
+              <img src="{{ thumb.image.url }}" alt="Thumbnail" loading="lazy" class="h-12 w-12 rounded-md object-cover border border-gray-300 hover:border-[#FF6B00] cursor-pointer">
+              {% else %}
+              <img src="https://via.placeholder.com/48x48?text=No+Image" alt="No Image" class="h-12 w-12 rounded-md object-cover border border-gray-300">
+              {% endif %}
             {% endfor %}
           </div>
           {% endif %}
+          {% endwith %}
+
           <a href="/get-quote/{{ product.id }}/" class="mt-auto inline-block w-full bg-[#FF6B00] hover:bg-[#e55a00] text-white text-center py-2.5 rounded-lg shadow-md font-semibold transition">Get a Quote</a>
         </div>
       </div>

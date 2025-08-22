@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Slider, Product, ProductImage
+from .models import Slider, Product, ProductImage, Testimonial
+
 
 # ---------------- Slider Admin ---------------- #
 @admin.register(Slider)
@@ -12,15 +13,18 @@ class SliderAdmin(admin.ModelAdmin):
 # ---------------- Product Images Inline ---------------- #
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
-    extra = 3  # Show 3 empty fields by default
-    fields = ("image",)
+    extra = 3  # Show 3 empty image fields by default
+    fields = ("image", "preview")
     readonly_fields = ("preview",)
 
     def preview(self, obj):
         if obj.image:
-            return f'<img src="{obj.image.url}" style="width:80px;height:80px;object-fit:cover;border-radius:6px;" />'
+            return format_html(
+                '<img src="{}" style="width:80px; height:80px; object-fit:cover; border-radius:6px;" />',
+                obj.image.url
+            )
         return "No Image"
-    preview.allow_tags = True
+    preview.short_description = "Preview"
 
 
 # ---------------- Product Admin ---------------- #
@@ -32,7 +36,7 @@ class ProductAdmin(admin.ModelAdmin):
     ordering = ("-created_at",)
     readonly_fields = ("created_at", "updated_at")
     inlines = [ProductImageInline]
-    
+
     fieldsets = (
         ("Product Details", {
             "fields": (
@@ -50,11 +54,18 @@ class ProductAdmin(admin.ModelAdmin):
         }),
     )
 
-from django.contrib import admin
-from .models import Testimonial
 
+# ---------------- Testimonial Admin ---------------- #
 @admin.register(Testimonial)
 class TestimonialAdmin(admin.ModelAdmin):
-    list_display = ('customer_name', 'rating', 'created_at')  # ✅ Use existing fields
+    list_display = ('customer_name', 'rating', 'created_at')
     search_fields = ('customer_name', 'message')
     list_filter = ('rating', 'created_at')
+
+
+from .models import CompanyInfo
+
+@admin.register(CompanyInfo)
+class CompanyInfoAdmin(admin.ModelAdmin):
+    list_display = ('title',)
+    search_fields = ('title', 'description')

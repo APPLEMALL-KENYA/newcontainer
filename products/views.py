@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Product, Slider, Testimonial
+from .models import Product, Slider, Testimonial, CompanyInfo
 
 def home(request):
     # Fetch active sliders
@@ -8,16 +8,20 @@ def home(request):
     # Fetch products with optimized related image loading
     products = Product.objects.prefetch_related("images").all()
 
-    # Fetch latest testimonials (limit 6)
+    # Fetch latest 6 testimonials
     testimonials = Testimonial.objects.order_by("-created_at")[:6]
 
-    # Context for the homepage template
+    # Get the first (and only) company info instance, if it exists
+    company_info = CompanyInfo.objects.first()
+
+    # Context for the homepage
     context = {
         "title": "Welcome to Containers App",
         "description": "Your one-stop solution for quality containers!",
         "sliders": sliders,
         "products": products,
         "testimonials": testimonials,
+        "company_info": company_info,
     }
 
     return render(request, "products/home.html", context)

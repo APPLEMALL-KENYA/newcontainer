@@ -88,3 +88,5 @@ class TestimonialAdmin(admin.ModelAdmin):
 class CompanyInfoAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'phone', 'updated_at')
     readonly_fields = ('updated_at',)
+
+

@@ -47,22 +47,6 @@ def home(request):
     return render(request, "products/home.html", context)
 
 
-# -------------------------
-# PRODUCT DETAIL VIEW
-# -------------------------
-def product_detail(request, pk):
-    # Fetch a single product with its gallery images
-    product = get_object_or_404(Product.objects.prefetch_related("gallery"), pk=pk)
-
-    # Related products (optional)
-    related_products = Product.objects.exclude(pk=pk)[:4]
-
-    context = {
-        "product": product,
-        "related_products": related_products,
-    }
-    return render(request, "products/product_detail.html", context)
-
 
 # -------------------------
 # PRODUCT LIST VIEW
@@ -79,4 +63,19 @@ def products_list(request):
             product.image_url = "/static/images/default-product.jpg"
 
     return render(request, "products/products_list.html", {"products": products})
+
+# views.py
+def about_view(request):
+    return render(request, 'about.html')
+
+
+def contact_view(request):
+    return render(request, 'contact.html')
+
+# views.py
+from .models import Slider
+
+# views.py
+from django.shortcuts import render, get_object_or_404
+from .models import Product
 

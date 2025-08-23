@@ -25,7 +25,7 @@
       <a href="/" class="text-gray-700 hover:text-[#FF6B00] font-[Lato] font-semibold">Home</a>
       <a href="/about/" class="text-gray-700 hover:text-[#FF6B00] font-[Lato] font-semibold">About</a>
       <a href="/services/" class="text-gray-700 hover:text-[#FF6B00] font-[Lato] font-semibold">Services</a>
-      <a href="{% url 'products_list' %}" class="text-gray-700 hover:text-[#FF6B00] font-[Lato] font-semibold">
+      <a href="/#/" class="text-gray-700 hover:text-[#FF6B00] font-[Lato] font-semibold">
         Products
     </a>
     
@@ -48,7 +48,10 @@
     <nav class="flex flex-col items-start gap-3 p-4">
       <a href="/" class="text-gray-700 hover:text-[#FF6B00] font-[Lato] font-semibold">Home</a>
       <a href="/about/" class="text-gray-700 hover:text-[#FF6B00] font-[Lato] font-semibold">About</a>
-      <a href="/services/" class="text-gray-700 hover:text-[#FF6B00] font-[Lato] font-semibold">Services</a>
+      <a href="{% url 'services' %}" class="text-blue-600 hover:underline">
+        Services
+      </a>
+      
       <a href="/products/" class="text-gray-700 hover:text-[#FF6B00] font-[Lato] font-semibold">Products</a>
       <a href="/contact/" class="text-gray-700 hover:text-[#FF6B00] font-[Lato] font-semibold">Contact</a>
       <a href="/get-quote/" class="px-5 py-2 bg-[#FF6B00] hover:bg-[#e55a00] text-white rounded-lg shadow-lg font-semibold">Get a Quote</a>
@@ -197,7 +200,9 @@ document.addEventListener("DOMContentLoaded", function() {
               </div>
             {% endif %}
 
-            <a href="{% url 'product_detail' product.id %}" class="mt-4 inline-block text-white bg-[#FF6B00] hover:bg-[#e55a00] px-4 py-2 rounded-lg font-semibold font-[Lato]">View Details</a>
+            <!-- Removed the link -->
+           <span class="mt-4 inline-block text-gray-600">Details not available</span>
+            <!-- Removed the link -->
           </div>
         </div>
       {% empty %}

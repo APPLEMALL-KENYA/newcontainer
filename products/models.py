@@ -1,6 +1,9 @@
 from django.db import models
 
+
+# -----------------------
 # Slider Model
+# -----------------------
 class Slider(models.Model):
     title = models.CharField(max_length=200)
     subtitle1 = models.CharField(max_length=300, blank=True, null=True)
@@ -14,7 +17,9 @@ class Slider(models.Model):
         return self.title
 
 
+# -----------------------
 # Product Model
+# -----------------------
 class Product(models.Model):
     STOCK_CHOICES = [
         ("in_stock", "In Stock"),
@@ -31,11 +36,11 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return self.name
-
-
-# ProductImage Model
+   
+    
+# -----------------------
+# Product Image Model
+# -----------------------
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images")
     image = models.ImageField(upload_to="products/images/")
@@ -45,30 +50,35 @@ class ProductImage(models.Model):
         return f"Image for {self.product.name}"
 
 
-# Testimonial Model
-from django.db import models
+# -----------------------
+# Product Gallery Model
+# -----------------------
+class ProductGallery(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="gallery")
+    image = models.ImageField(upload_to="products/gallery/")
 
+    def __str__(self):
+        return f"{self.product.name} - Image {self.id}"
+
+
+# -----------------------
+# Testimonial Model
+# -----------------------
 class Testimonial(models.Model):
-    name = models.CharField(max_length=100, default="Anonymous")  # Default name
+    name = models.CharField(max_length=100, default="Anonymous")
     designation = models.CharField(max_length=100, blank=True, null=True)
-    feedback = models.TextField(default="No feedback provided.")  # Default text
+    feedback = models.TextField(default="No feedback provided.")
     image = models.ImageField(upload_to='testimonials/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    rating = models.PositiveSmallIntegerField(default=5)  # optional for stars
+    rating = models.PositiveSmallIntegerField(default=5)
 
     def __str__(self):
         return self.name
 
-def get_image(self):
-    image = self.images.first()
-    if image:
-        return image.image.url
-    return '/media/product_images/default.jpg'  # No space!
 
-from django.db import models
-
-# models.py
-
+# -----------------------
+# Company Info Model
+# -----------------------
 class CompanyInfo(models.Model):
     name = models.CharField(max_length=255, default="Anonymous")
     email = models.EmailField(default="containerspaces@gmail.com")
@@ -77,17 +87,9 @@ class CompanyInfo(models.Model):
     location_url = models.URLField(blank=True, null=True)
     facebook = models.URLField(blank=True, null=True)
     instagram = models.URLField(blank=True, null=True)
-
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
 
-class ProductGallery(models.Model):
-    product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name="gallery"
-    )
-    image = models.ImageField(upload_to="products/gallery/")
-    
-    def __str__(self):
-        return f"{self.product.name} - Image {self.id}"
+

@@ -23,7 +23,13 @@
       <a href="/" class="text-gray-700 hover:text-[#FF6B00] font-[Lato] font-semibold">Home</a>
       <a href="/about/" class="text-gray-700 hover:text-[#FF6B00] font-[Lato] font-semibold">About</a>
       <a href="/services/" class="text-gray-700 hover:text-[#FF6B00] font-[Lato] font-semibold">Services</a>
-      <a href="/products/" class="text-gray-700 hover:text-[#FF6B00] font-[Lato] font-semibold">Products</a>
+      <a href="{% url 'products_list' %}" class="text-gray-700 hover:text-[#FF6B00] font-[Lato] font-semibold">
+        Products
+    </a>
+    
+        <!-- Product Image / Name -->
+    </a>
+    
       <a href="/contact/" class="text-gray-700 hover:text-[#FF6B00] font-[Lato] font-semibold">Contact</a>
     </nav>
     <!-- CTA -->
@@ -55,51 +61,58 @@
   mobileMenuBtn.addEventListener("click", () => mobileMenu.classList.toggle("hidden"));
 </script>
 
+
 <!-- Carousel -->
+<!-- Carousel Section -->
 <section class="relative w-full mt-20">
-  <div class="swiper mySwiper">
-    <div class="swiper-wrapper">
-      {% for slide in sliders %}
-      <div class="swiper-slide relative">
-        <img src="{{ slide.image.url }}" alt="{{ slide.title }}"
-          class="w-full h-[250px] sm:h-[400px] md:h-[500px] lg:h-[600px] object-cover rounded-lg animate-zoom" />
-        <div class="absolute inset-0 bg-black/20 rounded-lg"></div>
-        <div class="absolute top-1/4 sm:top-1/3 left-4 sm:left-10 z-10 max-w-[90%] sm:max-w-xl">
-          <h2
-            class="slide-item text-2xl sm:text-4xl lg:text-5xl font-extrabold font-[Lato] text-[#FFA500] mb-3 opacity-0 translate-x-[-50px]">
-            {{ slide.title }}</h2>
-          {% if slide.sub_description %}
-          <p
-            class="slide-item text-base sm:text-xl font-semibold font-[Lato] text-white mb-2 opacity-0 translate-x-[-50px]">
-            {{ slide.sub_description }}</p>
-          {% endif %}
-          {% if slide.description_left %}
-          <p
-            class="slide-item text-sm sm:text-lg text-gray-200 mb-2 opacity-0 translate-x-[-50px]">
-            {{ slide.description_left }}</p>
-          {% endif %}
-          {% if slide.description_right %}
-          <p
-            class="slide-item text-sm sm:text-lg font-bold text-white mb-4 opacity-0 translate-x-[50px]">
-            {{ slide.description_right }}</p>
-          {% endif %}
-          <a href="/get-quote/"
-            class="slide-item inline-block px-4 sm:px-6 py-2 sm:py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg shadow-lg font-semibold text-sm sm:text-lg opacity-0 translate-y-[20px]">
-            Get a Quote</a>
-        </div>
+<div class="swiper mySwiper">
+  <div class="swiper-wrapper">
+    {% for slide in sliders %}
+    <div class="swiper-slide relative">
+      <img src="{{ slide.image.url }}" alt="{{ slide.title }}"
+        class="w-full h-[250px] sm:h-[400px] md:h-[500px] lg:h-[600px] object-cover rounded-lg animate-zoom" />
+      <div class="absolute inset-0 bg-black/25 rounded-lg"></div>
+      <div class="absolute top-1/4 sm:top-1/3 left-4 sm:left-10 z-10 max-w-[90%] sm:max-w-xl">
+        <h2 class="slide-item text-2xl sm:text-4xl lg:text-5xl font-extrabold font-[Lato] text-orange-600 mb-3 opacity-0 translate-x-[-50px]"
+            style="text-shadow: 2px 2px 8px rgba(0,0,0,0.7);">
+          {{ slide.title }}
+        </h2>
+        {% if slide.subtitle1 %}
+        <p class="slide-item text-base sm:text-xl font-semibold font-[Lato] text-white mb-2 opacity-0 translate-x-[-50px]"
+           style="text-shadow: 1px 2px 6px rgba(0,0,0,0.6);">
+          {{ slide.subtitle1 }}
+        </p>
+        {% endif %}
+        {% if slide.subtitle2 %}
+        <p class="slide-item text-sm sm:text-lg text-gray-200 mb-2 opacity-0 translate-x-[-50px]"
+           style="text-shadow: 1px 2px 6px rgba(0,0,0,0.6);">
+          {{ slide.subtitle2 }}
+        </p>
+        {% endif %}
+        {% if slide.button_text and slide.button_link %}
+        <a href="{{ slide.button_link }}"
+          class="slide-item inline-block px-4 sm:px-6 py-2 sm:py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg shadow-lg font-semibold text-sm sm:text-lg opacity-0 translate-y-[20px]"
+          style="text-shadow: 1px 1px 5px rgba(0,0,0,0.5);">
+          {{ slide.button_text }}
+        </a>
+        {% endif %}
       </div>
-      {% endfor %}
     </div>
+    {% endfor %}
+  </div>
+</div>
+
 
     <div class="swiper-pagination"></div>
-   <!-- <div class="swiper-button-next"></div> -->
-    <!--<div class="swiper-button-prev"></div> -->
+    <!-- <div class="swiper-button-next"></div> -->
+    <!-- <div class="swiper-button-prev"></div> -->
   </div>
 </section>
 
 <!-- Swiper JS -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 <script>
+document.addEventListener("DOMContentLoaded", function() {
   const swiper = new Swiper(".mySwiper", {
     loop: true,
     autoplay: { delay: 7000, disableOnInteraction: false },
@@ -108,6 +121,16 @@
     effect: "fade",
     fadeEffect: { crossFade: true },
     on: {
+      init: () => {
+        // Animate first slide items on page load
+        const firstSlideItems = document.querySelectorAll(".swiper-slide-active .slide-item");
+        firstSlideItems.forEach((el, i) => {
+          setTimeout(() => {
+            el.style.opacity = 1;
+            el.style.transform = "translateX(0)";
+          }, i * 250);
+        });
+      },
       slideChangeTransitionStart: () => {
         document.querySelectorAll('.swiper-slide .slide-item').forEach(el => {
           el.style.opacity = 0;
@@ -127,8 +150,10 @@
       }
     }
   });
+});
 </script>
 
+<!-- Carousel Styles -->
 <style>
   .animate-zoom {
     transition: transform 7s ease-in-out;
@@ -144,64 +169,85 @@
 </style>
 
 
-<style>
-  .animate-zoom { transition: transform 7s ease-in-out; }
-  .swiper-slide-active img { transform: scale(1.05); }
-  .slide-item { transition: all 0.5s ease-in-out; }
-</style>
-
-<!-- About Section -->
-<section id="about" class="py-12 px-4 max-w-6xl mx-auto text-center">
-  <h3 class="text-3xl font-bold text-blue-800 mb-4">Who We Are</h3>
-  <p class="text-gray-700 leading-relaxed text-lg">
-    Container Spaces Kenya is a leading container logistics and modification company.
-    We provide high-quality container solutions for housing, storage, site offices, and custom fabrication.
-    Trusted by businesses, NGOs, and individuals across East Africa.
-  </p>
+{% if company_info %}
+<section class="py-16 bg-white text-center">
+  <div class="container mx-auto px-4">
+    {% if company_info.logo %}
+      <img src="{{ company_info.logo.url }}" alt="{{ company_info.name }}" class="mx-auto mb-4 h-20 object-contain">
+    {% endif %}
+    <h2 class="text-3xl font-bold text-gray-800">{{ company_info.name }}</h2>
+    {% if company_info.tagline %}
+      <p class="text-xl text-[#FFA500] font-semibold mt-2">{{ company_info.tagline }}</p>
+    {% endif %}
+    <p class="text-gray-600 mt-4 max-w-2xl mx-auto">{{ company_info.description }}</p>
+    <div class="mt-6 text-gray-700">
+      <p><strong>Email:</strong> {{ company_info.email }}</p>
+      <p><strong>Phone:</strong> {{ company_info.phone }}</p>
+      <p><strong>Address:</strong> {{ company_info.address }}</p>
+    </div>
+  </div>
 </section>
+{% endif %}
 
-<!-- Featured Products -->
-<!-- Featured Products -->
+
+<!-- Featured Products Section -->
+<!-- Featured Products Section -->
 <section id="products" class="py-16 bg-gray-100 px-4">
   <div class="max-w-7xl mx-auto text-center">
-    <h3 class="text-4xl font-[Lato] font-extrabold text-[#FF6B00] mb-8">Featured Products</h3>
-    <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <h3 class="text-4xl font-[Lato] font-extrabold text-[#FF6B00] mb-12">Featured Products</h3>
+    <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
       {% for product in products %}
-      <div class="product-card bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-xl transition duration-300 flex flex-col">
-        
-        {% if product.image %}
-        <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy" class="w-full h-56 object-cover rounded-t-2xl">
-        {% else %}
-        <img src="https://source.unsplash.com/600x400/?container,shipping" alt="Placeholder" loading="lazy" class="w-full h-56 object-cover rounded-t-2xl">
-        {% endif %}
+        <div class="product-card bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-xl transition duration-300 flex flex-col overflow-hidden">
+          <img 
+            src="{{ product.gallery_images.0|default:'/static/images/default-product.jpg' }}" 
+            alt="{{ product.name|default:'Product' }}" 
+            loading="lazy" 
+            class="w-full h-56 object-cover rounded-t-2xl main-product-image"
+            data-gallery="{{ product.gallery_images|join:',' }}"
+          >
+          <div class="p-4 flex-1 flex flex-col justify-between">
+            <h4 class="text-lg font-semibold font-[Lato] text-gray-800 mb-2">{{ product.name|default:"Unnamed Product" }}</h4>
+            <p class="text-gray-600 font-[Lato] mb-4">{{ product.price|default:"Price on request" }}</p>
 
-        <div class="p-4 flex-grow flex flex-col">
-          <h4 class="text-lg font-bold font-[Lato] text-gray-900 mb-1">{{ product.name }}</h4>
-          <p class="text-gray-600 text-sm mb-3 line-clamp-3">{{ product.description|truncatewords:20 }}</p>
+            {% if product.gallery_images %}
+              <div class="flex gap-2 mt-2 gallery-thumbnails">
+                {% for thumb_url in product.gallery_images %}
+                  <img src="{{ thumb_url|default:'/static/images/default-product.jpg' }}" alt="{{ product.name|default:'Product' }} thumbnail" class="w-16 h-16 object-cover rounded-lg thumbnail">
+                {% endfor %}
+              </div>
+            {% endif %}
 
-          {% with product.productgallery_set.all|slice:":3" as thumbnails %}
-          {% if thumbnails %}
-          <div class="flex space-x-2 mb-3">
-            {% for thumb in thumbnails %}
-              {% if thumb.image %}
-              <img src="{{ thumb.image.url }}" alt="Thumbnail" loading="lazy" class="h-12 w-12 rounded-md object-cover border border-gray-300 hover:border-[#FF6B00] cursor-pointer">
-              {% else %}
-              <img src="https://via.placeholder.com/48x48?text=No+Image" alt="No Image" class="h-12 w-12 rounded-md object-cover border border-gray-300">
-              {% endif %}
-            {% endfor %}
+            <a href="{% url 'product_detail' product.id %}" class="mt-4 inline-block text-white bg-[#FF6B00] hover:bg-[#e55a00] px-4 py-2 rounded-lg font-semibold font-[Lato]">View Details</a>
           </div>
-          {% endif %}
-          {% endwith %}
-
-          <a href="/get-quote/{{ product.id }}/" class="mt-auto inline-block w-full bg-[#FF6B00] hover:bg-[#e55a00] text-white text-center py-2.5 rounded-lg shadow-md font-semibold transition">Get a Quote</a>
         </div>
-      </div>
       {% empty %}
-      <p class="col-span-full text-gray-500 text-lg">No products available at the moment.</p>
+        <p class="col-span-full text-gray-500 font-[Lato]">No products available at the moment.</p>
       {% endfor %}
     </div>
   </div>
 </section>
+
+<!-- JS to auto-switch main images -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const products = document.querySelectorAll('.product-card');
+
+  products.forEach(product => {
+    const mainImage = product.querySelector('.main-product-image');
+    const galleryData = mainImage.dataset.gallery;
+    if(!galleryData) return;
+
+    const images = galleryData.split(',');
+    if(images.length <= 1) return; // only one image, no switch
+
+    let currentIndex = 0;
+    setInterval(() => {
+      currentIndex = (currentIndex + 1) % images.length;
+      mainImage.src = images[currentIndex];
+    }, 3000); // change image every 3 seconds
+  });
+});
+</script>
 
 
 <!-- Customer Testimonials Section -->
@@ -214,71 +260,53 @@
       Hear from businesses and individuals who trust Container Logistics Kenya
       for their transportation and logistics needs.
     </p>
-  <!-- Swiper -->
-<div class="swiper testimonialSwiper max-w-3xl mx-auto">
-  <div class="swiper-wrapper">
+
+    <!-- Swiper -->
     {% for testimonial in testimonials %}
-    <div class="swiper-slide bg-white rounded-xl shadow-xl p-8">
-      <div class="flex flex-col items-center">
-        <img src="{{ testimonial.image.url }}"
-          alt="{{ testimonial.name }}"
-          class="w-20 h-20 rounded-full shadow-lg mb-4" />
-        <p class="text-gray-700 text-lg italic mb-4">
-          "{{ testimonial.feedback }}"
-        </p>
-        <h3 class="text-lg font-bold font-[Lato] text-[#FFA500]">{{ testimonial.name }}</h3>
-        <span class="text-gray-500 text-sm">{{ testimonial.designation }}</span>
-      </div>
+    <div class="testimonial-card bg-white rounded-xl shadow-xl p-8 flex flex-col items-center">
+      {% if testimonial.image %}
+      <img src="{{ testimonial.image.url }}" alt="{{ testimonial.name }}" class="w-20 h-20 rounded-full shadow-lg mb-4">
+      {% endif %}
+    
+      <p class="text-gray-700 text-lg italic mb-4">
+        {{ testimonial.feedback }}
+      </p>
+    
+      {% if testimonial.name %}
+      <h3 class="text-lg font-bold font-[Lato] text-[#FFA500]">{{ testimonial.name }}</h3>
+      {% endif %}
+    
+      {% if testimonial.designation %}
+      <span class="text-gray-500 text-sm">{{ testimonial.designation }}</span>
+      {% endif %}
     </div>
     {% empty %}
-    <div class="swiper-slide bg-white rounded-xl shadow-xl p-8">
-      <div class="flex flex-col items-center">
-        <p class="text-gray-700 text-lg italic">No testimonials available yet.</p>
-      </div>
+    <p class="text-gray-700 text-lg italic">No testimonials available yet.</p>
+    {% endfor %}    
+
+      <!-- Pagination -->
+      <div class="swiper-pagination mt-4"></div>
     </div>
-    {% endfor %}
   </div>
-  <div class="mt-2">
-    {% for star in "★★★★★"|slice:":testimonial.rating" %}
-        ⭐
-    {% endfor %}
-</div>
+</section>
 
-  <!-- Pagination -->
-  <div class="swiper-pagination mt-5"></div>
-</div>
-
-<!-- Styles -->
-<style>
-  .testimonialSwiper .swiper-slide {
-    transition: transform 0.6s ease, opacity 0.6s ease;
-  }
-
-  .testimonialSwiper .swiper-slide-active {
-    transform: scale(1.05);
-  }
-
-  .testimonialSwiper img {
-    border: 4px solid #ffa500;
-  }
-</style>
-
-<!-- Swiper JS -->
+<!-- Swiper JS Initialization -->
 <script>
-  const testimonialSwiper = new Swiper(".testimonialSwiper", {
-    loop: true,
-    autoplay: {
-      delay: 5000,
-      disableOnInteraction: false,
-    },
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
-    },
-    effect: "fade",
-    fadeEffect: { crossFade: true },
+  document.addEventListener("DOMContentLoaded", function() {
+    const testimonialSwiper = new Swiper(".testimonialSwiper", {
+      loop: true,
+      autoplay: { delay: 5000, disableOnInteraction: false },
+      pagination: { el: ".swiper-pagination", clickable: true },
+      slidesPerView: 1,
+      spaceBetween: 20,
+      breakpoints: {
+        640: { slidesPerView: 1 },
+        768: { slidesPerView: 2 },
+      }
+    });
   });
 </script>
+
 
   <!-- Mission, Vision & Core Values Slider -->
 <div class="relative max-w-3xl mx-auto bg-white shadow-md rounded-2xl p-6 my-8 border border-gray-200">

@@ -10,10 +10,12 @@ SECRET_KEY = 'django-insecure-v^hly1!naxc3-@lqgjrn9i7fhquek%7-3wt1(eq1rputnvzkzr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# Railway / production hosting
+# Allowed hosts & CSRF
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ['https://*.up.railway.app']
-
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.up.railway.app',
+    'https://newcontainer-production.up.railway.app',
+]
 
 # Application definition
 INSTALLED_APPS = [
@@ -28,7 +30,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Must be high in the list
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # High for static files in production
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -42,7 +44,7 @@ ROOT_URLCONF = 'container.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],  # Optional if you want global templates
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -56,15 +58,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'container.wsgi.application'
 
-
-# Database (SQLite for now — not suitable for production)
+# Database
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -74,35 +74,31 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-
 # Internationalization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-
-# Static files (CSS, JS)
+# Static files
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATICFILES_DIRS = [BASE_DIR / 'static']   # Your root-level static folder
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Media files (user uploads)
+# Media files
+import os
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Auto field
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://newcontainer-production.up.railway.app',
-]
-
+# Security cookies
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
-import os
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# Auto field
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

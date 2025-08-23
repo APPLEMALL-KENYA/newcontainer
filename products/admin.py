@@ -1,6 +1,13 @@
 from django.contrib import admin
-from .models import Slider, Product, ProductImage, Testimonial
-
+from django.utils.html import format_html
+from .models import (
+    Slider,
+    Product,
+    ProductImage,
+    ProductGallery,
+    Testimonial,
+    CompanyInfo,
+)
 
 # ---------------- Slider Admin ---------------- #
 @admin.register(Slider)
@@ -24,7 +31,14 @@ class ProductImageInline(admin.TabularInline):
                 obj.image.url
             )
         return "No Image"
+
     preview.short_description = "Preview"
+
+
+# ---------------- Product Gallery Inline ---------------- #
+class ProductGalleryInline(admin.TabularInline):
+    model = ProductGallery
+    extra = 1
 
 
 # ---------------- Product Admin ---------------- #
@@ -35,7 +49,7 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ("name", "description_1", "description_2", "description_3")
     ordering = ("-created_at",)
     readonly_fields = ("created_at", "updated_at")
-    inlines = [ProductImageInline]
+    inlines = [ProductImageInline, ProductGalleryInline]
 
     fieldsets = (
         ("Product Details", {
@@ -55,17 +69,22 @@ class ProductAdmin(admin.ModelAdmin):
     )
 
 
+# ---------------- Product Gallery Admin ---------------- #
+@admin.register(ProductGallery)
+class ProductGalleryAdmin(admin.ModelAdmin):
+    list_display = ("product", "id")
+
+
 # ---------------- Testimonial Admin ---------------- #
 @admin.register(Testimonial)
 class TestimonialAdmin(admin.ModelAdmin):
-    list_display = ('customer_name', 'rating', 'created_at')
-    search_fields = ('customer_name', 'message')
-    list_filter = ('rating', 'created_at')
+    list_display = ('name', 'designation', 'rating', 'created_at')
+    list_filter = ('created_at', 'rating')
+    search_fields = ('name', 'designation', 'feedback')
 
 
-from .models import CompanyInfo
-
+# ---------------- Company Info Admin ---------------- #
 @admin.register(CompanyInfo)
 class CompanyInfoAdmin(admin.ModelAdmin):
-    list_display = ('title',)
-    search_fields = ('title', 'description')
+    list_display = ('name', 'email', 'phone', 'updated_at')
+    readonly_fields = ('updated_at',)

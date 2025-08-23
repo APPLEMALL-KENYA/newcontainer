@@ -46,15 +46,18 @@ class ProductImage(models.Model):
 
 
 # Testimonial Model
+from django.db import models
+
 class Testimonial(models.Model):
-    customer_name = models.CharField(max_length=255)
-    image = models.ImageField(upload_to="testimonials/", blank=True, null=True)
-    message = models.TextField()
-    rating = models.PositiveIntegerField(default=5)
+    name = models.CharField(max_length=100, default="Anonymous")  # Default name
+    designation = models.CharField(max_length=100, blank=True, null=True)
+    feedback = models.TextField(default="No feedback provided.")  # Default text
+    image = models.ImageField(upload_to='testimonials/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    rating = models.PositiveSmallIntegerField(default=5)  # optional for stars
 
     def __str__(self):
-        return self.customer_name
+        return self.name
 
 def get_image(self):
     image = self.images.first()
@@ -62,11 +65,29 @@ def get_image(self):
         return image.image.url
     return '/media/product_images/default.jpg'  # No space!
 
+from django.db import models
+
+# models.py
+
 class CompanyInfo(models.Model):
-    title = models.CharField(max_length=200)
-    description = models.TextField()
+    name = models.CharField(max_length=255, default="Anonymous")
+    email = models.EmailField(default="containerspaces@gmail.com")
+    phone = models.CharField(max_length=20, default="0000000000")
+    address = models.TextField(default="Not provided")
+    location_url = models.URLField(blank=True, null=True)
+    facebook = models.URLField(blank=True, null=True)
+    instagram = models.URLField(blank=True, null=True)
+
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.title
+        return self.name
 
-
+class ProductGallery(models.Model):
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name="gallery"
+    )
+    image = models.ImageField(upload_to="products/gallery/")
+    
+    def __str__(self):
+        return f"{self.product.name} - Image {self.id}"

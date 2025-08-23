@@ -1,3 +1,4 @@
+from urllib import request
 from django.shortcuts import render, get_object_or_404
 from .models import Product, ProductGallery, Slider, Testimonial, CompanyInfo
 
@@ -78,3 +79,4 @@ def products_list(request):
             product.image_url = "/static/images/default-product.jpg"
 
     return render(request, "products/products_list.html", {"products": products})
+

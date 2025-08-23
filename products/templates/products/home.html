@@ -2,6 +2,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Container Spaces Kenya</title>
@@ -167,28 +169,6 @@ document.addEventListener("DOMContentLoaded", function() {
     transition: all 0.5s ease-in-out;
   }
 </style>
-
-
-{% if company_info %}
-<section class="py-16 bg-white text-center">
-  <div class="container mx-auto px-4">
-    {% if company_info.logo %}
-      <img src="{{ company_info.logo.url }}" alt="{{ company_info.name }}" class="mx-auto mb-4 h-20 object-contain">
-    {% endif %}
-    <h2 class="text-3xl font-bold text-gray-800">{{ company_info.name }}</h2>
-    {% if company_info.tagline %}
-      <p class="text-xl text-[#FFA500] font-semibold mt-2">{{ company_info.tagline }}</p>
-    {% endif %}
-    <p class="text-gray-600 mt-4 max-w-2xl mx-auto">{{ company_info.description }}</p>
-    <div class="mt-6 text-gray-700">
-      <p><strong>Email:</strong> {{ company_info.email }}</p>
-      <p><strong>Phone:</strong> {{ company_info.phone }}</p>
-      <p><strong>Address:</strong> {{ company_info.address }}</p>
-    </div>
-  </div>
-</section>
-{% endif %}
-
 
 <!-- Featured Products Section -->
 <!-- Featured Products Section -->
@@ -371,15 +351,23 @@ document.addEventListener("DOMContentLoaded", function() {
              alt="WhatsApp" class="w-6 h-6">
         <span class="hidden md:inline font-semibold">Chat With Us</span>
     </a>
-<!-- CTA Popup -->
-<div id="ctaPopup" class="fixed bottom-6 right-6 bg-orange-500 text-white p-5 rounded-2xl shadow-lg w-80 animate-bounce">
-    <h2 class="text-xl font-bold mb-2">{{ settings.cta_title }}</h2>
-    <p class="text-sm">{{ settings.cta_subtitle }}</p>
-    <a href="{{ settings.cta_button_link }}"
-       class="bg-white text-orange-600 font-bold px-4 py-2 mt-3 rounded-lg inline-block hover:bg-gray-100">
-        {{ settings.cta_button_text }}
-    </a>
+
+<!-- Floating Bouncing CTA -->
+<div id="ctaPopup" class="fixed bottom-6 right-6 z-50 bg-orange-500 text-white px-6 py-6 rounded-2xl shadow-lg w-80 animate-bounce">
+  <!-- Close Button (optional) -->
+  <button onclick="document.getElementById('ctaPopup').style.display='none'"
+          class="absolute top-2 right-3 text-white text-xl leading-none hover:text-gray-300">
+    &times;
+  </button>
+
+  <h2 class="text-xl font-bold mb-2">Get Started Today!</h2>
+  <p class="text-sm mb-4">Get your next container with us. We deliver across Kenya and East Africa.</p>
+
+  <a href="#" class="bg-white text-orange-600 font-bold px-5 py-2 rounded-lg inline-block hover:bg-gray-100 transition">
+    GET QUOTE
+  </a>
 </div>
+
 
 <!-- WhatsApp Floating Button -->
 <a href="https://wa.me/{{ settings.whatsapp_number }}" 

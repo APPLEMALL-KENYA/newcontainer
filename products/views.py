@@ -32,7 +32,7 @@ def home(request):
     testimonials = Testimonial.objects.order_by("-created_at")[:6]
 
     # Fetch company info if available
-    company_info = CompanyInfo.objects.first()
+    company_info = CompanyInfo.objects.all())
 
     context = {
         "title": "Welcome to Containers App",

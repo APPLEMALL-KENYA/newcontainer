@@ -40,7 +40,8 @@ def home(request):
         "sliders": sliders,
         "products": products,
         "testimonials": testimonials,
-        "company_info": company_info,
+        "company_info": [company_info] if company_info else [],  # ✅ safe list
+
     }
     return render(request, "products/home.html", context)
 

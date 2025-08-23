@@ -4,20 +4,48 @@
 <head>
   <meta charset="UTF-8">
   <title>Our Services | Container Spaces Kenya</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {},
+      }
+    };
+  </script>
 </head>
 <body class="bg-gray-100 text-gray-800">
 
-  <!-- Header -->
+  <!-- Header with Mobile Menu -->
   <header class="bg-white shadow-md sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
       <a href="{% url 'home' %}" class="text-2xl font-bold text-blue-600">ContainerSpaces</a>
-      <nav class="space-x-4">
-        <a href="/home/" class="text-gray-700 hover:text-blue-600">Home</a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex space-x-6">
+        <a href="{% url 'home' %}" class="text-gray-700 hover:text-blue-600">Home</a>
         <a href="{% url 'services' %}" class="text-blue-600 font-semibold">Services</a>
-        <a href="/products/" class="text-gray-700 hover:text-blue-600">Products</a>
+        <a href="{% url 'products' %}" class="text-gray-700 hover:text-blue-600">Products</a>
         <a href="{% url 'contact' %}" class="text-gray-700 hover:text-blue-600">Contact</a>
       </nav>
+
+      <!-- Mobile Hamburger -->
+      <div class="md:hidden">
+        <button id="menu-btn" class="text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+               viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Links -->
+    <div id="mobile-menu" class="md:hidden hidden px-4 pb-4">
+      <a href="{% url 'home' %}" class="block py-2 text-gray-700 hover:text-blue-600">Home</a>
+      <a href="{% url 'services' %}" class="block py-2 text-blue-600 font-semibold">Services</a>
+      <a href="{% url 'products' %}" class="block py-2 text-gray-700 hover:text-blue-600">Products</a>
+      <a href="{% url 'contact' %}" class="block py-2 text-gray-700 hover:text-blue-600">Contact</a>
     </div>
   </header>
 
@@ -45,9 +73,18 @@
   <!-- Footer -->
   <footer class="bg-white border-t mt-10">
     <div class="max-w-7xl mx-auto px-4 py-6 text-center text-sm text-gray-500">
-      &copy; {{ now.year }} Container Spaces Kenya. All rights reserved.
+      &copy; {% now "Y" %} Container Spaces Kenya. All rights reserved.
     </div>
   </footer>
+
+  <!-- Mobile Menu Toggle Script -->
+  <script>
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+  </script>
 
 </body>
 </html>
